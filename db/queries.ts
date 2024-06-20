@@ -53,6 +53,11 @@ export const getUnits = cache(async () => {
 
   const normalizedData = data.map((unit) => {
     const lessonWithCompletedStatus = unit.lessons.map((lesson) => {
+      //if: check lessons in seed.ts
+      if (lesson.challenges.length === 0) {
+        return { ...lesson, completed: false };
+      }
+
       const allCompletedChallenges = lesson.challenges.every((challenge) => {
         return (
           challenge.challengeProgress &&
@@ -121,12 +126,6 @@ export const getCourseProgress = cache(async () => {
         );
       });
     });
-  //เพิ่ม if ตามGPT
-  // if (firstUncompletedLesson) {
-  //   firstUncompletedLesson.unit = unitsInActiveCourse.find((unit) =>
-  //     unit.lessons.some((lesson) => lesson.id === firstUncompletedLesson.id)
-  //   )!;
-  // }
 
   return {
     activeLesson: firstUncompletedLesson,

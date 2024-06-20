@@ -35,6 +35,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+## เริ่มproject
+
 layout file เปลี่ยนfont Inter เป็นNunito
 https://ui.shadcn.com/docs/installation/next
 shadcn/ui :collection of re-usable components
@@ -72,7 +74,9 @@ matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 
 > header.tsx
 > ใส่image โดยใช้ รูปภาพจาก https://kenney.nl/assets/shape-characters
+
 > ดูรูปได้ที่ https://github.com/AntonioErdeljac/lingo-early-access/tree/master/public
+
 > import รูปเข้าในfolder public
 
 ในsignInButton docs clerk ใหม่ จะใช้ <SignInButton mode="modal"
@@ -184,3 +188,15 @@ bun db:seed, bun db:studio
 
 dasnboard วงกลม
 ติดตั้ง npm i react-circular-progressbar
+
+#Lesson Header สำหรับสร้างเกจpercent รวมถึง x และ heart ด้วย
+สร้าง folder lesson>page สร้าง prop Quiz ,header
+ติดตั้ง npx shadcn-ui@latest add progress
+
+#Exit model
+npx shadcn-ui@latest add dialog
+npm i zustand
+สร้าง folder ที่root lingo store >useExitModal.ts เพื่อset การเปิดปิด Modal และสร้างmodal exitmodal component เพื่อแจ้งเตือนข้อความก่อนปิดmodal
+
+#challenge Cards
+สร้างcard ตัวเลือกในหน้าlearn

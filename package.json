@@ -14,7 +14,9 @@
   "dependencies": {
     "@clerk/nextjs": "^5.1.4",
     "@neondatabase/serverless": "^0.9.3",
-    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-context": "^1.1.0",
+    "@radix-ui/react-dialog": "^1.1.0",
+    "@radix-ui/react-progress": "^1.1.0",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -29,7 +31,8 @@
     "react-dom": "^18",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",
