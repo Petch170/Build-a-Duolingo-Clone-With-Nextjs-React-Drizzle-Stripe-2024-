@@ -75,6 +75,8 @@ matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 > header.tsx
 > ใส่image โดยใช้ รูปภาพจาก https://kenney.nl/assets/shape-characters
 
+#github Antonio
+
 > ดูรูปได้ที่ https://github.com/AntonioErdeljac/lingo-early-access/tree/master/public
 
 > import รูปเข้าในfolder public
@@ -200,3 +202,14 @@ npm i zustand
 
 #challenge Cards
 สร้างcard ตัวเลือกในหน้าlearn
+
+#challege footer
+สร้างเสียงโดยใช้ AI
+https://elevenlabs.io/
+download file .mp3 และมั่นใจว่า seed.ts >challengesOptions ชื่อไฟล์ตรงกัน
+
+npm i react-use // ใช้useAudio, useKey
+
+#Challenge Actions || mark challenge complete
+สร้างไฟล์ challenge.ts ในfolder actions
+เมื่อทำการเลือกข้อที่ถูกต้องในหน้าweb ข้อมูลuserและ status completed จะโชว์อยู่ในตาราง challenge_progress ที่drizzle
