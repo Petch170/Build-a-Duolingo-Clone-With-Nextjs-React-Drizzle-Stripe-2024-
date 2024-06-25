@@ -1,15 +1,21 @@
 "use client";
 
-import { challenges, challengesOptions } from "@/db/schema";
+import { challenges, challengesOptions, lessons } from "@/db/schema";
 import { useState, useTransition } from "react";
 import { Header } from "./header";
 import { QuestionBubble } from "./questionBubble";
 import { Challenge } from "./challenge";
 import { Footer } from "./footer";
-import { Console, error } from "console";
+import Confetti from "react-confetti";
 import { upsertChallengeProgress } from "@/actions/challengeProgess";
 import { toast } from "sonner";
 import { reduceHearts } from "@/actions/userprogress";
+import { useAudio, useWindowSize, useMount } from "react-use";
+import Image from "next/image";
+import { ResultCard } from "./resultcard";
+import { useRouter } from "next/navigation";
+import { useHeartsModal } from "@/store/useHeartModal";
+import { usePracticeModal } from "@/store/usePracticeModal";
 
 type Props = {
   initialPercentage: number;
@@ -29,7 +35,30 @@ export const Quiz = ({
   initialLessonChallenges,
   userSubscription,
 }: Props) => {
+  const { open: openHeartsModal } = useHeartsModal();
+  const { open: openPracticeModal } = usePracticeModal();
+
+  useMount(() => {
+    if (initialPercentage === 100) {
+      openPracticeModal();
+    }
+  });
+
+  const { width, height } = useWindowSize();
+
+  const router = useRouter();
+
+  const [finishAudio] = useAudio({ src: "/finish.mp3", autoPlay: true });
+
+  //ใส่เสียงหลังจากกดคำตอบในแต่ลพข้อว่าถูก/ผิด
+  const [correctAudio, _c, correctControls] = useAudio({ src: "/correct.wav" });
+
+  const [inCorrectAudio, _i, inCorrectControls] = useAudio({
+    src: "/incorrect.wav",
+  });
+
   const [pending, startTransition] = useTransition();
+  const [lessonId] = useState(initialLessonId);
 
   //header.tsx change heart
   //   const [hearts, setHearts] = useState(50 || initialHeart);
@@ -37,7 +66,9 @@ export const Quiz = ({
 
   // hesder.tsx เกจเปอร์เซ็นต์ ระหว่าง x กับ heart เปลี่ยนสีเกจได้ที่ component>ui>progress.tsx
   //   const [percentage, setPercentage] = useState(60 || initialPercentage);
-  const [percentage, setPercentage] = useState(initialPercentage);
+  const [percentage, setPercentage] = useState(() => {
+    return initialPercentage === 100 ? 0 : initialPercentage;
+  });
 
   const [challenges] = useState(initialLessonChallenges);
 
@@ -54,6 +85,7 @@ export const Quiz = ({
   const challenge = challenges[activeIndex];
   const options = challenge?.challengesOptions ?? [];
 
+  //ในonNext เช็คตัวเลือกในchallenge ให้feedback ว่าตอบถูกหรือผิด
   const onNext = () => {
     setActiveIndex((current) => current + 1);
   };
@@ -92,10 +124,12 @@ export const Quiz = ({
         upsertChallengeProgress(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              console.error("Missing hearts");
+              // console.error("Missing hearts"); //ใช้ openHeartModal แทน เมื่อheart หมด จะเด้งหน้าให้ซื้อหัวใจ
+              openHeartsModal();
               return;
             }
 
+            correctControls.play(); //ใส่เสียง
             setStatus("correct");
             setPercentage((prev) => prev + 100 / challenges.length);
 
@@ -113,10 +147,12 @@ export const Quiz = ({
         reduceHearts(challenge.id)
           .then((response) => {
             if (response?.error === "heart") {
-              console.error("Missing heart");
+              // console.error("Missing heart");
+              openHeartsModal();
               return;
             }
 
+            inCorrectControls.play(); //ใส่เสียง
             setStatus("wrong");
 
             if (!response?.error) {
@@ -128,6 +164,55 @@ export const Quiz = ({
     }
   };
 
+  //เสร็จquiz 1 บท จะแจ้งเตือนข้อความในdiv  พร้อมเสียง (schema.challenges ในseed.ts )
+  // <div> Finish the challenge</div>
+  if (!challenge) {
+    return (
+      <>
+        {finishAudio}
+        <Confetti
+          width={width}
+          height={height}
+          recycle={false}
+          numberOfPieces={500}
+          tweenDuration={10000}
+        />
+        {/* <div> Finish the challenge</div> */}
+        <div className=" flex flex-col gap-y-4 lg:gap-y-8 max-w-lg mx-auto text-center items-center justify-center h-full">
+          <Image
+            src="/finish.svg"
+            alt="Finish"
+            className=" hidden lg:block"
+            height={100}
+            width={100}
+          />
+          <Image
+            src="/finish.svg"
+            alt="Finish"
+            className=" block lg:hidden"
+            height={50}
+            width={50}
+          />
+          <h1 className=" text-xl lg:text-3xl font-bold text-neutral-700">
+            Great job! <br /> You&apos;ne completed the lesson.
+          </h1>
+          <div className=" flex items-center gap-x-4 w-full">
+            <ResultCard
+              variant="points"
+              value={challenges.length * 10} //challengeprogress.ts > update userProgress .points
+            />
+            <ResultCard variant="hearts" value={hearts} />
+          </div>
+        </div>
+        <Footer //click continue redirect to page learn
+          lessonId={lessonId}
+          status="completed"
+          onCheck={() => router.push("/learn")}
+        />
+      </>
+    );
+  }
+
   const title =
     challenge.type === "ASSIST"
       ? "Select the correct meaning"
@@ -135,6 +220,8 @@ export const Quiz = ({
 
   return (
     <>
+      {inCorrectAudio}
+      {correctAudio}
       <Header
         heart={hearts}
         percentage={percentage}

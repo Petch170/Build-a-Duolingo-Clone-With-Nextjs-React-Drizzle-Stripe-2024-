@@ -49,7 +49,7 @@ const LearnPage = async () => {
           points={userProgress.points}
           // hasActiveSubscription={false}
           hasActiveSubscription={false}
-        ></UserProgress>
+        />
       </StickyWraper>
       <FeedWrapper>
         {/* My Feeed learn layout */}

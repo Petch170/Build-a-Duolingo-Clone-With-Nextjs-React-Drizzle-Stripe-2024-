@@ -213,3 +213,83 @@ npm i react-use // ใช้useAudio, useKey
 #Challenge Actions || mark challenge complete
 สร้างไฟล์ challenge.ts ในfolder actions
 เมื่อทำการเลือกข้อที่ถูกต้องในหน้าweb ข้อมูลuserและ status completed จะโชว์อยู่ในตาราง challenge_progress ที่drizzle
+
+#challenge Finish Screen //get feedbaack หลังกดคำตอบในแต่ละข้อ (เสียงเวลากดช้อยถูก/ผิด/จบบทนั้นๆ)
+npm i react-confetti
+//confetti พลุโปรย
+
+#challenge Practice
+สร้าง fileใน folder ในstore copy exitmodal> useheartsmodal
+สร้าง fileใน folder ในmodal copy exitmodal> heartsmodal
+
+เปลี่ยนfile นำเข้าconst { isOpen, close } = useHeartsModal();
+เปลี่ยนImage Src จาก mascot_bad >mascod_sad
+
+practice again (ทำquiz บทนั้นซ้ำอีกครั้ง ถึงผิดก็จะไม่เสียหัวใจ)
+สร้างไฟล์practice แล้วทำเหมือน useheartsmodal และ heartsmodal
+เรียกใช้useMount
+
+#shop
+folder main> folder shop>page
+เป็นหน้า shop สำหรับเติมheart ด้วย point(สายฟ้า)
+สร้างfunc ในactions>userprogress.ts เพื่อrefillHearts
+
+#stripe
+db>schema > สร้าง schema stripe
+
+ติดตั้ง stripe
+npm i stripe
+folder lib> strip.ts >apiVersion= auto
+
+https://stripe.com/en-th
+สร้างชื่อproject >apiKey> copy secret keyลงใน.env
+shop> page
+
+ีสร้างfile actions >usersubscriptions.ts
+เป็นserver สำหรับ api
+สร้างfunc absoluteUrl เพื่อสร้างURL เชื่อมต่อ API
+สร้างฟังก์ชัน createStripeUrl ตรวจสอบการรับรองตัวตนของผู้ใช้ ดึงข้อมูลการสมัครสมาชิกจากฐานข้อมูล ถ้ามีการสมัครสมาชิกอยู่แล้วจะสร้างเซสชันของ Stripe Billing Portal และส่ง URL กลับ ถ้าไม่มีการสมัครสมาชิกจะสร้างเซสชันใหม่สำหรับการสมัครสมาชิกผ่าน Stripe Checkout และส่งข้อมูลเซสชันกลับ.
+
+#สร้าง route
+api route> app>api>webhook >stripe> route.ts
+
+web: stripe > dashboard> webhooks> test in a local environment >download CLI >ติดตั้งตาม docs >
+ทำให้รันในvscode ได้
+
+# เปิดไฟล์ .bashrc
+
+code ~/.bashrc
+
+# เพิ่ม path ของ stripe.exe ลงในไฟล์ .bashrc
+
+export PATH=$PATH:/c/Users/nameUser/Desktop/stripe_1.20.0_windows_x86_64
+
+> save
+
+# โหลดไฟล์ .bashrc ให้การตั้งค่ามีผลในทันที
+
+source ~/.bashrc
+
+stripe listen --forward-to localhost:3000/a
+api/webhooks/stripe และเอาwebhooks secret ใส่ที่ .env (ใช้localhost ตัวเอง ตามด้วยชื่อfolder)
+
+หลังจาก test stripe แล้ว ในitem.tsx
+
+<Button onClick={onUpgrade} disabled={pending}>
+          {hasActiveSubscription ? "active" : "upgrade"} 
+          {hasActiveSubscription ? "settings" : "upgrade"}
+        </Button>
+        ลองเปลี่ยนจาก active เป็น setting จะมีerror แจ้งเตือนในrun dev terminal หลังจากclick link จะไปหน้า customer portal >ให้กด activate test link
+และกดsettings อีกครั้ง จะเข้าสู่หน้าข้อมูล/ประวัติใบแจ้งหนี้/ package ข้อมูล
+
+//active คือการลงชื่อเข้าใช้งาน
+//settings คือการตั้งค่าข้อมูล
+
+สามารถกดยกเลิก package ในstripe ได้ เมื่อกดกลับหน้าlingo และหัวใจยังเป็นinfinity แต่learn มีheart =5
+แก้ไขโดย
+
+# Detail
+
+แก้ไข heart ในshop กับ learn ไม่เท่ากัน
+learn>page
+เพิ่ม
