@@ -9,10 +9,13 @@ import {
   getLessonPercentage,
   getUnits,
   getUserProgress,
+  getUserSubscription,
 } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { Unit } from "./Unit";
 import { lessons, units as unitsSchema } from "@/db/schema";
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 
 const LearnPage = async () => {
   const userProgressData = getUserProgress();
@@ -20,13 +23,22 @@ const LearnPage = async () => {
   const lessonPercentageData = getLessonPercentage();
   const unitsData = getUnits();
 
-  const [userProgress, units, courseProgress, lessonPercentage] =
-    await Promise.all([
-      userProgressData,
-      unitsData,
-      courseProgressData,
-      lessonPercentageData,
-    ]);
+  //heart :shoppage=learnpage
+  const userSubscriptionData = getUserSubscription();
+
+  const [
+    userProgress,
+    units,
+    courseProgress,
+    lessonPercentage,
+    userSubscription,
+  ] = await Promise.all([
+    userProgressData,
+    unitsData,
+    courseProgressData,
+    lessonPercentageData,
+    userSubscriptionData,
+  ]);
 
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
@@ -35,6 +47,8 @@ const LearnPage = async () => {
   if (!courseProgress) {
     redirect("/courses");
   }
+
+  const isPro = !!userSubscription?.isActive;
 
   return (
     <div className=" flex flex-row-reverse gap-[48px] px-6">
@@ -48,8 +62,13 @@ const LearnPage = async () => {
           // points={100}
           points={userProgress.points}
           // hasActiveSubscription={false}
-          hasActiveSubscription={false}
+          //ให้หัวใจในshop page ตรงกับ learn lage
+          hasActiveSubscription={isPro}
         />
+
+        {/* sidebar */}
+        {!isPro && <Promo />}
+        <Quests points={userProgress.points} />
       </StickyWraper>
       <FeedWrapper>
         {/* My Feeed learn layout */}

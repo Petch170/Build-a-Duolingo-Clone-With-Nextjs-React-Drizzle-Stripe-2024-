@@ -270,8 +270,7 @@ export PATH=$PATH:/c/Users/nameUser/Desktop/stripe_1.20.0_windows_x86_64
 
 source ~/.bashrc
 
-stripe listen --forward-to localhost:3000/a
-api/webhooks/stripe และเอาwebhooks secret ใส่ที่ .env (ใช้localhost ตัวเอง ตามด้วยชื่อfolder)
+stripe listen --forward-to localhost:3000/api/webhooks/stripe และเอาwebhooks secret ใส่ที่ .env (ใช้localhost ตัวเอง ตามด้วยชื่อfolder)
 
 หลังจาก test stripe แล้ว ในitem.tsx
 
@@ -286,10 +285,43 @@ api/webhooks/stripe และเอาwebhooks secret ใส่ที่ .env (�
 //settings คือการตั้งค่าข้อมูล
 
 สามารถกดยกเลิก package ในstripe ได้ เมื่อกดกลับหน้าlingo และหัวใจยังเป็นinfinity แต่learn มีheart =5
-แก้ไขโดย
 
 # Detail
 
 แก้ไข heart ในshop กับ learn ไม่เท่ากัน
 learn>page
-เพิ่ม
+ดึงข้อมูลจาก getUserSubscription ลงใน learnpage ,shoppage และ lessonpage
+
+[lessonId] เช็คpractice ว่าทำงานใหม่ได้ไหม
+
+root lingo>
+constant.ts
+
+ย้าย const POINTS_TO_REFILL = 10; เพื่อใช้ทั้งcilent,server
+
+# leaderboard
+
+copy folder shop and rename leaderboard
+เพิ่ม ลำดับ รูปavatar และ point
+
+npx shadcn-ui@latest add avatar
+npx shadcn-ui@latest add separator
+
+avatar=รูปemail
+separator=เส้นคั่น
+
+# quests
+
+copy folder leaderboard and rename quests
+map ข้อมูลเกี่ยวกับpoints,progress,quest
+
+ต้องการsidebar ในหน้าappทุหน้า หลังเข้าจากกดเข้าแอพแล้ว
+สร้างcomponent Promo และเรียกใช้งานในstickyWraper ที่มีการเรียกใช้งาน func isPro ที่ page : learn,quests,leaderboard,shoppage
+
+สร้าง reuseable สำหรับsidebar item quest
+copy Promo in component rename quest.tsx
+แล้วเรียกใช้ที่page:learn,shop,leaderboard
+
+copy learn>loading.tsx ไว้ที่ leaderboard,shop,quests
+
+# admin

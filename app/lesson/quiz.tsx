@@ -1,6 +1,6 @@
 "use client";
 
-import { challenges, challengesOptions, lessons } from "@/db/schema";
+import { challenges, challengesOptions, userSubsciption } from "@/db/schema";
 import { useState, useTransition } from "react";
 import { Header } from "./header";
 import { QuestionBubble } from "./questionBubble";
@@ -25,7 +25,12 @@ type Props = {
     completed: boolean;
     challengesOptions: (typeof challengesOptions.$inferSelect)[];
   })[];
-  userSubscription: any;
+  // userSubscription: any;
+  userSubscription:
+    | (typeof userSubsciption.$inferSelect & {
+        isActive: boolean;
+      })
+    | null;
 };
 
 export const Quiz = ({
@@ -50,7 +55,7 @@ export const Quiz = ({
 
   const [finishAudio] = useAudio({ src: "/finish.mp3", autoPlay: true });
 
-  //ใส่เสียงหลังจากกดคำตอบในแต่ลพข้อว่าถูก/ผิด
+  //ใส่เสียงหลังจากกดคำตอบในแต่ลtข้อว่าถูก/ผิด
   const [correctAudio, _c, correctControls] = useAudio({ src: "/correct.wav" });
 
   const [inCorrectAudio, _i, inCorrectControls] = useAudio({

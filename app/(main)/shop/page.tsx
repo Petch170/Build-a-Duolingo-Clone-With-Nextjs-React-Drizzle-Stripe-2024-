@@ -5,6 +5,8 @@ import { getUserProgress, getUserSubscription } from "@/db/queries";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Items } from "./item";
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 
 const ShopPage = async () => {
   const userProgressData = getUserProgress();
@@ -31,9 +33,13 @@ const ShopPage = async () => {
           hearts={userProgress.hearts}
           points={userProgress.points}
           // hasActiveSubscription={false}
-          hasActiveSubscription={!!userSubscription?.isActive} //ใช้!!แปลงค่าเป็น boolean
+          // hasActiveSubscription={!!userSubscription?.isActive} //ใช้!!แปลงค่าเป็น boolean
+          hasActiveSubscription={isPro}
         />
-        {/* This sticky in ShopPage */}
+        {/* sidebar */}
+        {!isPro && <Promo />}
+
+        <Quests points={userProgress.points} />
       </StickyWraper>
       <FeedWrapper>
         <div className=" w-full flex flex-col items-center">

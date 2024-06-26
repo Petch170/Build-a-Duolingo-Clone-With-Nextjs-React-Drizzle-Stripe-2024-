@@ -3,11 +3,12 @@
 import { createStripeUrl } from "@/actions/userSubscription";
 import { refillHearts } from "@/actions/userprogress";
 import { Button } from "@/components/ui/button";
+import { POINTS_TO_REFILL } from "@/constants";
 import Image from "next/image";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
-const POINTS_TO_REFILL = 10;
+// const POINTS_TO_REFILL = 10;  ย้ายไปใช้ในconstants.ts
 
 type Props = {
   hearts: number;

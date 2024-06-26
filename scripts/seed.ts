@@ -17,6 +17,7 @@ const main = async () => {
     await db.delete(schema.lessons);
     await db.delete(schema.challengesOptions);
     await db.delete(schema.challengeProgress);
+    await db.delete(schema.userSubsciption);
 
     await db.insert(schema.courses).values([
       { id: 1, title: "Spanish", imageSrc: "/es.svg" },
