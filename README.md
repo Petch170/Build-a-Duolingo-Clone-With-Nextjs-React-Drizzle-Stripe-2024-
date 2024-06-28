@@ -77,7 +77,9 @@ matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 
 #github Antonio
 
-> ดูรูปได้ที่ https://github.com/AntonioErdeljac/lingo-early-access/tree/master/public
+> # ดูรูปได้ที่
+>
+> https://github.com/AntonioErdeljac/lingo-early-access/tree/master/public
 
 > import รูปเข้าในfolder public
 
@@ -325,3 +327,44 @@ copy Promo in component rename quest.tsx
 copy learn>loading.tsx ไว้ที่ leaderboard,shop,quests
 
 # admin
+
+create folder app> admin
+
+> page.tsx
+> app.tsx
+
+npm i react-admin ra-data-simple-rest
+เรียกใช้ dynamic Import
+
+สร้างroute.ts ที่folder api>courses และตั้งค่า cors ในnext.config.mjs
+
+สร้างไฟล์ admin.tsในfolder lib
+เรียกใช้งาน auth ผ่านclerk
+ไปที่dashboard clerk >users>view profile >copy userId
+
+admin.ts >ส่งค่า userIdที่copyมา
+
+copy seed.ts เปลี่ยนเป็น reset และตั้งค่าscripts
+
+## ความแตกต่างชื่อfolder
+
+folder (main)
+/courses>page.tsx
+/leaderboard>page.tsx
+เวลาแสดงurl จะไม่แสดงmainออกมาด้วย ปกติถ้าไม่มี()จะเป็น localhost/main/course  
+มี() แสดงเป็น http://localhost:3000/courses
+
+url อ้างอิง ไว้ดึงข้อมูลในแอพพลิเคชั่น มีid,slug
+
+[params]>page.tsx แสดงid,
+Ex. /app/product>[id]>page.tsx
+จะได้url`/product/เลขid`
+
+[slug]>page.tsx ชื่อหน้าเพจนั้นๆ
+
+# product
+
+scripts จากgithub antonio
+
+deploy
+npm run build
