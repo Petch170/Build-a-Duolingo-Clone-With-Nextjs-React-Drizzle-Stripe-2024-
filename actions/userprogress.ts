@@ -156,5 +156,5 @@ export const refillHearts = async () => {
   revalidatePath("/learn");
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
-  revalidatePath("/lesson");
+  // revalidatePath("/lesson");
 };

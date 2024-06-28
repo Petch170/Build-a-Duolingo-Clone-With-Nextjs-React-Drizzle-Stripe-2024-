@@ -368,3 +368,28 @@ scripts จากgithub antonio
 
 deploy
 npm run build
+
+deploy บน vercel อย่าลืมใส่ .env ใน environment
+หลัง deployเสร็จ copy url domains
+
+stripe.com >webhook >host endpoint(เพิ่มปลายทาง)>
+วาง URL ที่ได้จากDomailn vercel ที่endpoint url และเพิ่ม /api/webhooks/stripe (ชื่อโฟลเดอร์)
+
+URL ปลายทาง ใส่ https://
+build-a-duolingo-clone-with-nextjs-react-drizzle-stripe-2024.vercel.app/api/webhooks/stripe
+
+> click select event to send (เลือกเหตุการณ์เพื่อรอการเรียกใช้)
+> เลือก 2 ตัว add endpoint
+> checkout.session.completed
+> invoice.payment_succeeded
+
+ถ้าไม่มั่นใจให้เข้าไปดูข้อมูลevent.type ที่ folder api/webhooks/stripe/route.ts
+
+ได้ status enable click reveal ที่signing secret(คีย์ลับเข้าระบบ) และcopy key
+ไปที่vercel >setting>project setting
+
+> environment variables หาfile STRIPE_WEBHOOK_SECRET > edit> แทนที่value เดิม > save
+> NEXT_PUBLIC_APP_URL >edit >เปลี่ยนvalue จาก http://localhost:3000 เป็นชื่อDomain ไม่ต้องมี/หลัง app
+> https://build-a-duolingo-clone-with-nextjs-react-drizzle-stripe-2024.vercel.app >save
+
+Deployment click ที่ชื่อproject >Redeploy >ดูDeployment Detail เสร็จ >test app > test stipe >upgrade > ใส่ข้อมูลในstripe ต้องมั่นใจว่าเป็นโหมด test หลังจากใส่ข้อมูลtest แล้ว ในdashboard stripe ต้องขึ้นข้อมูลเกตุการณ์ด้วย
